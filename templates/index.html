@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ennaval — கவிதைகள்</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Noto+Serif+Tamil:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --aged: #e8dfc8;
+    --rust: #8b4513;
+    --gold: #c8963e;
+    --dim: #6b5d4f;
+    --faint: #d4c9b5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Serif Tamil', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Paper texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 27px,
+        rgba(139,69,19,0.06) 28px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Grain texture */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 80px 20px 60px;
+    border-bottom: 1px solid var(--faint);
+  }
+
+  .header-ornament {
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  h1 span {
+    display: block;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.45em;
+    color: var(--dim);
+    letter-spacing: 0.02em;
+    margin-top: 8px;
+  }
+
+  .header-line {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 30px auto;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .header-sub {
+    font-size: 0.9rem;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.7s forwards;
+  }
+
+  .insta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 22px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--dim);
+    text-decoration: none;
+    border: 1px solid var(--faint);
+    padding: 8px 18px;
+    border-radius: 30px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+  .insta-link:hover {
+    color: var(--rust);
+    border-color: var(--gold);
+    background: rgba(200,150,62,0.07);
+  }
+
+  /* ── POEMS GRID ── */
+  main {
+    position: relative;
+    z-index: 10;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 30px 120px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 50px 40px;
+  }
+
+  /* ── POEM CARD ── */
+  .poem-card {
+    position: relative;
+    background: #fffdf7;
+    border: 1px solid var(--faint);
+    padding: 44px 38px 36px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+
+    /* torn paper top edge effect */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8'%3E%3Cpath d='M0 4 Q20 0 40 4 Q60 8 80 4 Q100 0 120 4 Q140 8 160 4 Q180 0 200 4 Q220 8 240 4 Q260 0 280 4 Q300 8 320 4 Q340 0 360 4 Q380 8 400 4 L400 400 L0 400 Z' fill='black'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8'%3E%3Cpath d='M0 4 Q20 0 40 4 Q60 8 80 4 Q100 0 120 4 Q140 8 160 4 Q180 0 200 4 Q220 8 240 4 Q260 0 280 4 Q300 8 320 4 Q340 0 360 4 Q380 8 400 4 L400 400 L0 400 Z' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 8px, 100% 100%;
+    mask-size: 100% 8px, 100% 100%;
+    -webkit-mask-position: top, top;
+    mask-position: top, top;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* reset mask for clean look */
+  .poem-card {
+    -webkit-mask-image: none;
+    mask-image: none;
+    border-top: 3px solid var(--gold);
+  }
+
+  .poem-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  }
+
+  /* card number */
+  .poem-number {
+    position: absolute;
+    top: -14px;
+    left: 38px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.7rem;
+    font-style: italic;
+    padding: 4px 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .poem-date {
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 22px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+  }
+
+  .poem-body {
+    font-size: 1rem;
+    line-height: 2;
+    color: var(--ink);
+    white-space: pre-line;
+  }
+
+  .poem-body em {
+    font-style: normal;
+    color: var(--rust);
+  }
+
+  .poem-signature {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--faint);
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--dim);
+    text-align: right;
+  }
+
+  /* staggered animations */
+  .poem-card:nth-child(1) { animation-delay: 0.2s; }
+  .poem-card:nth-child(2) { animation-delay: 0.35s; }
+  .poem-card:nth-child(3) { animation-delay: 0.5s; }
+  .poem-card:nth-child(4) { animation-delay: 0.65s; }
+  .poem-card:nth-child(5) { animation-delay: 0.8s; }
+  .poem-card:nth-child(6) { animation-delay: 0.95s; }
+  .poem-card:nth-child(7) { animation-delay: 1.1s; }
+
+  /* ── FEATURED card (wider) ── */
+  .poem-card.featured {
+    grid-column: 1 / -1;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .poem-card.featured .poem-body {
+    font-size: 1.1rem;
+    line-height: 2.2;
+  }
+
+  /* ── MODAL / EXPANDED VIEW ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,20,16,0.85);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+
+  .overlay.active {
+    display: flex;
+  }
+
+  .modal {
+    background: var(--paper);
+    max-width: 580px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 60px 50px;
+    position: relative;
+    border-top: 4px solid var(--gold);
+    animation: modalIn 0.3s ease;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--dim);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--ink); }
+
+  .modal-date {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 30px;
+  }
+
+  .modal-body {
+    font-size: 1.1rem;
+    line-height: 2.2;
+    white-space: pre-line;
+    color: var(--ink);
+  }
+
+  .modal-sig {
+    margin-top: 40px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--dim);
+    text-align: right;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 40px 20px 60px;
+    border-top: 1px solid var(--faint);
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--dim);
+  }
+
+  footer strong {
+    font-style: normal;
+    color: var(--ink);
+  }
+
+  /* ── KEYFRAMES ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── ADD POEM BUTTON ── */
+  .add-btn {
+    position: fixed;
+    bottom: 36px;
+    right: 36px;
+    z-index: 50;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .add-btn:hover { background: var(--rust); transform: scale(1.08); }
+
+  /* ── ADD POEM PANEL ── */
+  .add-panel-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,20,16,0.82);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .add-panel-overlay.active { display: flex; }
+
+  .add-panel {
+    background: var(--paper);
+    max-width: 540px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 50px 44px 40px;
+    position: relative;
+    border-top: 4px solid var(--gold);
+    animation: modalIn 0.3s ease;
+  }
+
+  .add-panel h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    color: var(--ink);
+  }
+
+  .add-panel label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--dim);
+    margin-bottom: 6px;
+    margin-top: 18px;
+  }
+
+  .add-panel input,
+  .add-panel textarea {
+    width: 100%;
+    background: #fffdf7;
+    border: 1px solid var(--faint);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: 'Noto Serif Tamil', serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+  .add-panel input:focus,
+  .add-panel textarea:focus { border-color: var(--gold); }
+
+  .add-panel textarea { min-height: 160px; line-height: 1.9; }
+
+  .add-panel .submit-btn {
+    margin-top: 28px;
+    width: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 14px;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .add-panel .submit-btn:hover { background: var(--rust); }
+
+  .add-panel .panel-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--dim);
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .add-panel .panel-close:hover { color: var(--ink); }
+
+  /* delete button on card */
+  .poem-card .delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 0.75rem;
+    color: var(--faint);
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 2px;
+    transition: color 0.2s, background 0.2s;
+    z-index: 5;
+  }
+  .poem-card .delete-btn:hover { color: var(--rust); background: rgba(139,69,19,0.06); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--aged); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    main { padding: 50px 16px 80px; gap: 36px; }
+    .poem-card { padding: 36px 24px 28px; }
+    .modal { padding: 40px 28px; }
+    h1 { font-size: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">✦ கவிதை ✦</div>
+  <h1>என்னவள் நாதிரா<span>விக்கி — Tamil Love Poems</span></h1>
+  <div class="header-line"></div>
+  <p class="header-sub">காதல் · இயற்கை · உணர்வு</p>
+  <a class="insta-link" href="https://www.instagram.com/vigneshvellaidurai/" target="_blank" rel="noopener">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    @vigneshvellaidurai
+  </a>
+</header>
+
+<main id="poem-grid"></main>
+
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeOverlay()">✕</button>
+    <div class="modal-date" id="modal-date"></div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-sig" id="modal-sig"></div>
+  </div>
+</div>
+
+<button class="add-btn" onclick="openAddPanel()" title="கவிதை சேர்க்க">＋</button>
+
+<div class="add-panel-overlay" id="addPanelOverlay" onclick="closeAddPanelOutside(event)">
+  <div class="add-panel">
+    <button class="panel-close" onclick="closeAddPanel()">✕</button>
+    <h2>✦ புதிய கவிதை சேர்க்க</h2>
+
+    <label>தேதி (Date)</label>
+    <input type="text" id="inp-date" placeholder="எ.கா. மார்ச். 24, 2026">
+
+    <label>கவிதை (Poem) *</label>
+    <textarea id="inp-body" placeholder="உங்கள் கவிதையை இங்கே எழுதுங்கள்..."></textarea>
+
+    <label>கையெழுத்து (Signature)</label>
+    <input type="text" id="inp-sig" placeholder="— உங்கள் பெயர்">
+
+    <button class="submit-btn" onclick="submitPoem()">கவிதை சேர் →</button>
+  </div>
+</div>
+
+<footer>
+  <p>எழுதியவர் <strong>விக்கி</strong> — அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை</p>
+</footer>
+
+<script>
+const DEFAULT_POEMS = [
+  {
+    date: "10 பிப்., 2024",
+    body: `அவளுக்கு அவ்வளவு நீள கூந்தல் இல்லை.
+ஆனால், அந்த அழகுக்கும் குறைவில்லை.
+
+அந்த கார் வண்ண கூந்தலில் கலையிடுகிறது ஒற்றை ரோஜா.
+
+என்னைப்போலவே அந்த ரோஜாவும் வெட்கப்பட்டுக்கொண்டு தான்
+அவளது கூந்தலின் பின்னால் மறைந்து கொண்டது போல.
+
+அதனை(ரோஜா) போலவே மறைந்து கொண்டு நானும் புன்னகைத்தேன்.
+
+பின்பு மனதிற்குள் ஒரு புலம்பல்,
+ரோஜா ஒரு ரோஜாவை சூடி இருக்கிறாளே என்று.
+
+சிரித்தபடி நான்...`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "செப். 12, 2024",
+    body: `கோடை காலத்திலும் குளம் வற்றவில்லை.
+அந்த பெண் மீன் பிரிந்து போனதால்.
+
+தண்ணீர் வற்றியும்,
+ஆண் மீனின் கண்ணீரில் வாழ்கிறது காதல்.
+
+காதல் மட்டுமா? அவளும் தான்...`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "டிச. 12, 2024",
+    body: `உன்னை கண்டுபிடிக்க முகமெல்லாம் தேவை இல்லை,
+என்னை கலங்கடித்த உன் கண்களே போதும்.`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "ஜன. 21, 2026",
+    body: `எப்படி சொல்வேன் திகட்டுவதற்கு நீ ஒன்றும் உணவு அல்ல,
+என் உலகமென்று.`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "பிப். 13, 2026",
+    body: `பிடிக்கவில்லையா?
+பரவாயில்லை.
+
+எல்லா பூக்களும்
+எல்லா செடிகளிலும்
+பூக்குமா என்னா?
+
+உனக்கு பிடித்த செடியில்
+பூக்க வாழ்ந்துக்கள்.`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "பிப். 17, 2026",
+    body: `அன்று ஒரு இரவு அவள் "Good night" சொல்ல மறந்துவிட்டாள்,
+அன்றிரவு நான் தூங்கவேண்டும் என்பதையே மறந்துவிட்டேன்.`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "பிப். 11, 2026",
+    body: `இத்தனைக்கும்
+பிறதுமா
+காதலிக்கிறாய்?
+என்னால் என்ன சொல்வேன்...
+
+இத்தனைக்கும்
+பிறும்
+காதலிக்கப்படுகிறேனா —
+இது போதாதா?`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "",
+    body: `பல பாம்புகளின் பற்களில் இருந்து பிழைத்துக்கொண்டவன்,
+ஒரு பட்டாம்பூச்சியின் பார்வைக்கு பலியானான்.`,
+    sig: "— விக்கி"
+  }
+];
+
+function loadPoems() {
+  try {
+    const saved = localStorage.getItem('ennaval_poems');
+    return saved ? JSON.parse(saved) : DEFAULT_POEMS;
+  } catch(e) { return DEFAULT_POEMS; }
+}
+
+function savePoems(poems) {
+  try { localStorage.setItem('ennaval_poems', JSON.stringify(poems)); } catch(e) {}
+}
+
+let poems = loadPoems();
+
+function renderPoems() {
+  const grid = document.getElementById('poem-grid');
+  grid.innerHTML = '';
+  poems.forEach((p, i) => {
+    const card = document.createElement('article');
+    card.className = 'poem-card';
+    card.innerHTML = `
+      <div class="poem-number">${String(i + 1).padStart(2, '0')}</div>
+      <button class="delete-btn" title="நீக்கு" onclick="deletePoem(event, ${i})">✕</button>
+      ${p.date ? `<div class="poem-date">${p.date}</div>` : '<div class="poem-date">—</div>'}
+      <div class="poem-body">${p.body}</div>
+      <div class="poem-signature">${p.sig || ''}</div>
+    `;
+    card.addEventListener('click', (e) => {
+      if (e.target.classList.contains('delete-btn')) return;
+      openModal(p);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function deletePoem(e, index) {
+  e.stopPropagation();
+  if (!confirm('இந்த கவிதையை நீக்கவா?')) return;
+  poems.splice(index, 1);
+  savePoems(poems);
+  renderPoems();
+}
+
+function openModal(p) {
+  document.getElementById('modal-date').textContent = p.date || '';
+  document.getElementById('modal-body').textContent = p.body;
+  document.getElementById('modal-sig').textContent = p.sig || '';
+  document.getElementById('overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOverlay() {
+  document.getElementById('overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('overlay')) closeOverlay();
+}
+
+function openAddPanel() {
+  document.getElementById('addPanelOverlay').classList.add('active');
+  document.getElementById('inp-body').focus();
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAddPanel() {
+  document.getElementById('addPanelOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function closeAddPanelOutside(e) {
+  if (e.target === document.getElementById('addPanelOverlay')) closeAddPanel();
+}
+
+function submitPoem() {
+  const body = document.getElementById('inp-body').value.trim();
+  if (!body) { alert('கவிதை எழுதவும்!'); return; }
+  const date = document.getElementById('inp-date').value.trim();
+  const sig  = document.getElementById('inp-sig').value.trim() || '— அ익்கியவர்';
+  poems.unshift({ date, body, sig });
+  savePoems(poems);
+  renderPoems();
+  document.getElementById('inp-date').value = '';
+  document.getElementById('inp-body').value = '';
+  document.getElementById('inp-sig').value  = '';
+  closeAddPanel();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeOverlay(); closeAddPanel(); }
+});
+
+renderPoems();
+</script>
+</body>
+</html>
