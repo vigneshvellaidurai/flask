@@ -1,493 +1,721 @@
 <!DOCTYPE html>
 <html lang="ta">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>அன்பே நாதிரா · விக்கி</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,300;1,500&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --bg:        #f5f0e8;
-      --cream:     #faf6ee;
-      --card:      #ffffff;
-      --border:    #d4c9a8;
-      --gold:      #b8952a;
-      --gold-dark: #8a6e1a;
-      --gold-line: #c9a84c;
-      --text:      #1a1410;
-      --text2:     #3d3228;
-      --muted:     #8c7b60;
-      --num-bg:    #1a1410;
-      --num-text:  #ffffff;
-      --close:     #aaa;
-      --close-h:   #1a1410;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ennaval — கவிதைகள்</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Noto+Serif+Tamil:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Noto Serif Tamil', serif;
-      min-height: 100vh;
-    }
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --aged: #e8dfc8;
+    --rust: #8b4513;
+    --gold: #c8963e;
+    --dim: #6b5d4f;
+    --faint: #d4c9b5;
+  }
 
-    /* ── HERO / HEADER ── */
-    .hero {
-      background: var(--cream);
-      border-bottom: 1px solid var(--border);
-      text-align: center;
-      padding: 70px 24px 52px;
-      position: relative;
-      overflow: hidden;
-    }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* Subtle texture lines */
-    .hero::before {
-      content:'';
-      position:absolute; inset:0;
-      background-image: repeating-linear-gradient(
-        0deg, transparent, transparent 39px,
-        rgba(180,150,80,0.07) 39px, rgba(180,150,80,0.07) 40px
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Serif Tamil', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Paper texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 27px,
+        rgba(139,69,19,0.06) 28px
       );
-      pointer-events:none;
-    }
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    .hero-ornament {
-      display:flex; align-items:center; justify-content:center;
-      gap:18px; margin-bottom:28px;
-    }
-    .orn-line {
-      height:1px; width:90px;
-      background:linear-gradient(90deg,transparent,var(--gold-line));
-    }
-    .orn-line.r { background:linear-gradient(90deg,var(--gold-line),transparent); }
-    .orn-diamond { color:var(--gold); font-size:16px; letter-spacing:6px; }
+  /* Grain texture */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
 
-    .site-title {
-      font-family:'Noto Serif Tamil',serif;
-      font-size: clamp(48px,9vw,96px);
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: 2px;
-      line-height: 1.1;
-    }
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 80px 20px 60px;
+    border-bottom: 1px solid var(--faint);
+  }
 
-    .site-subtitle {
-      margin-top:14px;
-      font-family:'Cormorant Garamond',serif;
-      font-style:italic; font-size:17px;
-      color:var(--muted); letter-spacing:4px;
-    }
+  .header-ornament {
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
 
-    .hero-bottom-line {
-      display:flex; align-items:center; justify-content:center;
-      gap:18px; margin:28px 0 24px;
-    }
-    .hbl-line {
-      height:1px; flex:1; max-width:180px;
-      background:linear-gradient(90deg,transparent,var(--border));
-    }
-    .hbl-line.r { background:linear-gradient(90deg,var(--border),transparent); }
-    .hbl-text {
-      font-family:'Cormorant Garamond',serif;
-      font-style:italic; font-size:15px;
-      color:var(--muted); letter-spacing:3px;
-    }
+  h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
 
-    .insta-link {
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 26px;
-      border:1.5px solid var(--border);
-      border-radius:50px;
-      color:var(--text2); text-decoration:none; font-size:14px;
-      background: rgba(255,255,255,0.6);
-      transition:all 0.3s; letter-spacing:0.5px;
-      font-family:'Cormorant Garamond',serif;
-    }
-    .insta-link:hover {
-      background:var(--text); color:white; border-color:var(--text);
-    }
-    .insta-link svg { width:16px; height:16px; }
+  h1 span {
+    display: block;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.45em;
+    color: var(--dim);
+    letter-spacing: 0.02em;
+    margin-top: 8px;
+  }
 
-    /* ── ADD SECTION ── */
-    .add-section {
-      max-width:900px; margin:48px auto 0; padding:0 24px;
-    }
+  .header-line {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 30px auto;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
 
-    .add-box {
-      background:white; border:1px solid var(--border);
-      border-top:3px solid var(--gold);
-      padding:32px; border-radius:2px;
-      box-shadow:0 4px 24px rgba(0,0,0,0.06);
-    }
+  .header-sub {
+    font-size: 0.9rem;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.7s forwards;
+  }
 
-    .add-label {
-      font-family:'Cormorant Garamond',serif;
-      font-size:11px; letter-spacing:4px;
-      text-transform:uppercase; color:var(--gold-dark);
-      margin-bottom:18px;
-    }
+  .insta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 22px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--dim);
+    text-decoration: none;
+    border: 1px solid var(--faint);
+    padding: 8px 18px;
+    border-radius: 30px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+  .insta-link:hover {
+    color: var(--rust);
+    border-color: var(--gold);
+    background: rgba(200,150,62,0.07);
+  }
 
-    .add-row { display:flex; flex-direction:column; gap:14px; }
+  /* ── POEMS GRID ── */
+  main {
+    position: relative;
+    z-index: 10;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 30px 120px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 50px 40px;
+  }
 
-    .field-row { display:flex; gap:14px; }
+  /* ── POEM CARD ── */
+  .poem-card {
+    position: relative;
+    background: #fffdf7;
+    border: 1px solid var(--faint);
+    padding: 44px 38px 36px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
 
-    input[type="text"], textarea, input[type="date"] {
-      background:#fafaf8; border:1px solid var(--border);
-      padding:12px 16px; color:var(--text);
-      font-family:'Noto Serif Tamil',serif; font-size:15px;
-      width:100%; outline:none;
-      transition:border-color 0.25s, box-shadow 0.25s;
-      border-radius:1px;
-    }
-    input[type="text"]:focus, textarea:focus, input[type="date"]:focus {
-      border-color:var(--gold); box-shadow:0 0 0 3px rgba(184,149,42,0.1);
-      background:white;
-    }
-    input[type="text"]::placeholder, textarea::placeholder { color:#bbb; }
-    textarea { min-height:130px; resize:vertical; }
+    /* torn paper top edge effect */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8'%3E%3Cpath d='M0 4 Q20 0 40 4 Q60 8 80 4 Q100 0 120 4 Q140 8 160 4 Q180 0 200 4 Q220 8 240 4 Q260 0 280 4 Q300 8 320 4 Q340 0 360 4 Q380 8 400 4 L400 400 L0 400 Z' fill='black'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8'%3E%3Cpath d='M0 4 Q20 0 40 4 Q60 8 80 4 Q100 0 120 4 Q140 8 160 4 Q180 0 200 4 Q220 8 240 4 Q260 0 280 4 Q300 8 320 4 Q340 0 360 4 Q380 8 400 4 L400 400 L0 400 Z' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 8px, 100% 100%;
+    mask-size: 100% 8px, 100% 100%;
+    -webkit-mask-position: top, top;
+    mask-position: top, top;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
 
-    .date-field { flex:0 0 200px; }
-    .title-field { flex:1; }
+  /* reset mask for clean look */
+  .poem-card {
+    -webkit-mask-image: none;
+    mask-image: none;
+    border-top: 3px solid var(--gold);
+  }
 
-    .btn-add {
-      align-self:flex-end;
-      display:inline-flex; align-items:center; gap:8px;
-      padding:12px 32px;
-      background:var(--num-bg); color:white;
-      border:none; font-family:'Cormorant Garamond',serif;
-      font-size:16px; letter-spacing:1px;
-      cursor:pointer; transition:all 0.3s;
-      border-radius:1px;
-    }
-    .btn-add:hover { background:var(--gold-dark); }
-    .btn-add svg { width:16px; height:16px; }
+  .poem-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  }
 
-    /* ── POEMS COUNT BAR ── */
-    .count-bar {
-      max-width:900px; margin:40px auto 0; padding:0 24px;
-      display:flex; align-items:center; gap:16px;
-    }
-    .count-line { flex:1; height:1px; background:var(--border); }
-    .count-text {
-      font-family:'Cormorant Garamond',serif;
-      font-size:13px; letter-spacing:3px; color:var(--muted);
-      text-transform:uppercase; white-space:nowrap;
-    }
+  /* card number */
+  .poem-number {
+    position: absolute;
+    top: -14px;
+    left: 38px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.7rem;
+    font-style: italic;
+    padding: 4px 12px;
+    letter-spacing: 0.05em;
+  }
 
-    /* ── GRID ── */
-    .grid {
-      max-width:1160px; margin:32px auto 80px;
-      padding:0 24px;
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-      gap:32px;
-      align-items:start;
-    }
+  .poem-date {
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 22px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+  }
 
-    /* ── POEM CARD ── */
-    .poem-card {
-      background:white; border:1px solid var(--border);
-      position:relative; overflow:visible;
-      animation:fadeup 0.45s cubic-bezier(0.34,1.4,0.64,1) both;
-      transition:box-shadow 0.3s, transform 0.3s;
-      box-shadow:0 2px 16px rgba(0,0,0,0.06);
-    }
-    .poem-card:hover {
-      box-shadow:0 8px 40px rgba(0,0,0,0.12);
-      transform:translateY(-3px);
-    }
-    @keyframes fadeup {
-      from{opacity:0;transform:translateY(28px);}
-      to{opacity:1;transform:translateY(0);}
-    }
+  .poem-body {
+    font-size: 1rem;
+    line-height: 2;
+    color: var(--ink);
+    white-space: pre-line;
+  }
 
-    /* top gold line */
-    .poem-card::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:3px;
-      background:linear-gradient(90deg,var(--gold),var(--gold-line),transparent);
-    }
+  .poem-body em {
+    font-style: normal;
+    color: var(--rust);
+  }
 
-    /* number badge */
-    .card-num {
-      position:absolute; top:-18px; left:16px;
-      background:var(--num-bg); color:var(--num-text);
-      font-family:'Cormorant Garamond',serif;
-      font-size:13px; font-weight:600; letter-spacing:1px;
-      padding:4px 14px; z-index:2;
-    }
+  .poem-signature {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--faint);
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--dim);
+    text-align: right;
+  }
 
-    /* close button */
-    .card-close {
-      position:absolute; top:12px; right:14px;
-      background:none; border:none;
-      color:var(--close); font-size:18px; line-height:1;
-      cursor:pointer; transition:color 0.2s; padding:2px 6px;
-      font-family:sans-serif;
-    }
-    .card-close:hover { color:var(--close-h); }
+  /* staggered animations */
+  .poem-card:nth-child(1) { animation-delay: 0.2s; }
+  .poem-card:nth-child(2) { animation-delay: 0.35s; }
+  .poem-card:nth-child(3) { animation-delay: 0.5s; }
+  .poem-card:nth-child(4) { animation-delay: 0.65s; }
+  .poem-card:nth-child(5) { animation-delay: 0.8s; }
+  .poem-card:nth-child(6) { animation-delay: 0.95s; }
+  .poem-card:nth-child(7) { animation-delay: 1.1s; }
 
-    .card-body { padding:28px 28px 24px; }
+  /* ── FEATURED card (wider) ── */
+  .poem-card.featured {
+    grid-column: 1 / -1;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
 
-    .card-date {
-      font-family:'Cormorant Garamond',serif;
-      font-style:italic; font-size:14px;
-      color:var(--gold); margin-bottom:18px;
-      letter-spacing:0.5px;
-    }
+  .poem-card.featured .poem-body {
+    font-size: 1.1rem;
+    line-height: 2.2;
+  }
 
-    .card-title {
-      font-size:17px; font-weight:700; color:var(--text);
-      margin-bottom:14px; line-height:1.4;
-      font-family:'Noto Serif Tamil',serif;
-    }
+  /* ── MODAL / EXPANDED VIEW ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,20,16,0.85);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
 
-    .card-poem {
-      font-size:15px; line-height:2;
-      color:var(--text2); white-space:pre-wrap;
-      font-family:'Noto Serif Tamil',serif;
-    }
+  .overlay.active {
+    display: flex;
+  }
 
-    .card-footer {
-      margin-top:24px; padding-top:16px;
-      border-top:1px solid #e8e0d0;
-      text-align:right;
-    }
-    .card-sig {
-      font-family:'Cormorant Garamond',serif;
-      font-style:italic; font-size:16px;
-      color:var(--muted); letter-spacing:1px;
-    }
+  .modal {
+    background: var(--paper);
+    max-width: 580px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 60px 50px;
+    position: relative;
+    border-top: 4px solid var(--gold);
+    animation: modalIn 0.3s ease;
+  }
 
-    /* ── EMPTY STATE ── */
-    .empty {
-      grid-column:1/-1; text-align:center;
-      padding:80px 20px; color:var(--muted);
-    }
-    .empty-sym { font-size:48px; display:block; margin-bottom:16px; }
-    .empty p { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:18px; }
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--dim);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--ink); }
 
-    /* ── FOOTER ── */
-    footer {
-      border-top:1px solid var(--border); background:var(--cream);
-      text-align:center; padding:28px 20px;
-      color:var(--muted); font-size:13px;
-      font-family:'Cormorant Garamond',serif; letter-spacing:1px;
-    }
-    footer a { color:var(--gold-dark); text-decoration:none; }
-    footer a:hover { color:var(--text); }
-    .footer-sig {
-      display:block; margin-top:8px;
-      font-style:italic; font-size:18px; color:var(--text2);
-      letter-spacing:2px;
-    }
+  .modal-date {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 30px;
+  }
 
-    /* ── TOAST ── */
-    .toast {
-      position:fixed; bottom:28px; left:50%;
-      transform:translateX(-50%) translateY(80px);
-      background:var(--num-bg); color:white;
-      font-family:'Cormorant Garamond',serif; font-size:15px;
-      padding:12px 30px; border-radius:1px;
-      z-index:1000; transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-      letter-spacing:1px; box-shadow:0 8px 30px rgba(0,0,0,0.2);
-    }
-    .toast.show { transform:translateX(-50%) translateY(0); }
+  .modal-body {
+    font-size: 1.1rem;
+    line-height: 2.2;
+    white-space: pre-line;
+    color: var(--ink);
+  }
 
-    /* ── ADD BUTTON FAB ── */
-    .fab {
-      position:fixed; bottom:32px; right:32px;
-      width:56px; height:56px; border-radius:50%;
-      background:var(--num-bg); color:white;
-      border:none; font-size:28px; line-height:1;
-      cursor:pointer; box-shadow:0 4px 20px rgba(0,0,0,0.25);
-      transition:all 0.3s; z-index:100;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .fab:hover { background:var(--gold-dark); transform:scale(1.1); }
+  .modal-sig {
+    margin-top: 40px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--dim);
+    text-align: right;
+  }
 
-    /* scroll to add */
-    @media(max-width:768px) {
-      .field-row { flex-direction:column; }
-      .date-field { flex:auto; }
-      .grid { grid-template-columns:1fr; }
-    }
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 40px 20px 60px;
+    border-top: 1px solid var(--faint);
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--dim);
+  }
 
-    ::-webkit-scrollbar { width:6px; }
-    ::-webkit-scrollbar-track { background:var(--bg); }
-    ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
-    ::-webkit-scrollbar-thumb:hover { background:var(--gold); }
-  </style>
+  footer strong {
+    font-style: normal;
+    color: var(--ink);
+  }
+
+  /* ── KEYFRAMES ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── ADD POEM BUTTON ── */
+  .add-btn {
+    position: fixed;
+    bottom: 36px;
+    right: 36px;
+    z-index: 50;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .add-btn:hover { background: var(--rust); transform: scale(1.08); }
+
+  /* ── ADD POEM PANEL ── */
+  .add-panel-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,20,16,0.82);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .add-panel-overlay.active { display: flex; }
+
+  .add-panel {
+    background: var(--paper);
+    max-width: 540px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 50px 44px 40px;
+    position: relative;
+    border-top: 4px solid var(--gold);
+    animation: modalIn 0.3s ease;
+  }
+
+  .add-panel h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    color: var(--ink);
+  }
+
+  .add-panel label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--dim);
+    margin-bottom: 6px;
+    margin-top: 18px;
+  }
+
+  .add-panel input,
+  .add-panel textarea {
+    width: 100%;
+    background: #fffdf7;
+    border: 1px solid var(--faint);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: 'Noto Serif Tamil', serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+  .add-panel input:focus,
+  .add-panel textarea:focus { border-color: var(--gold); }
+
+  .add-panel textarea { min-height: 160px; line-height: 1.9; }
+
+  .add-panel .submit-btn {
+    margin-top: 28px;
+    width: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 14px;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .add-panel .submit-btn:hover { background: var(--rust); }
+
+  .add-panel .panel-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--dim);
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .add-panel .panel-close:hover { color: var(--ink); }
+
+  /* delete button on card */
+  .poem-card .delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 0.75rem;
+    color: var(--faint);
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 2px;
+    transition: color 0.2s, background 0.2s;
+    z-index: 5;
+  }
+  .poem-card .delete-btn:hover { color: var(--rust); background: rgba(139,69,19,0.06); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--aged); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    main { padding: 50px 16px 80px; gap: 36px; }
+    .poem-card { padding: 36px 24px 28px; }
+    .modal { padding: 40px 28px; }
+    h1 { font-size: 3rem; }
+  }
+</style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-ornament">
-    <div class="orn-line"></div>
-    <span class="orn-diamond">◆ ◆ ◆</span>
-    <div class="orn-line r"></div>
-  </div>
-  <h1 class="site-title">அன்பே நாதிரா</h1>
-  <p class="site-subtitle">Anbe Naathira · கவிதைத் தொகுப்பு</p>
-  <div class="hero-bottom-line">
-    <div class="hbl-line"></div>
-    <span class="hbl-text">காதல் · இயற்கை · உணர்வு</span>
-    <div class="hbl-line r"></div>
-  </div>
-  <a class="insta-link" href="https://www.instagram.com/vigneshvellaidurai/" target="_blank">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-      <circle cx="12" cy="12" r="4"/>
-      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
-    </svg>
+<header>
+  <div class="header-ornament">✦ கவிதை ✦</div>
+  <h1>என்னவள் நாதிரா<span>விக்கி — Tamil Love Poems</span></h1>
+  <div class="header-line"></div>
+  <p class="header-sub">காதல் · இயற்கை · உணர்வு</p>
+  <a class="insta-link" href="https://www.instagram.com/vigneshvellaidurai/" target="_blank" rel="noopener">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
     @vigneshvellaidurai
   </a>
-</div>
+</header>
 
-<!-- ADD POEM -->
-<div class="add-section" id="add-section">
-  <div class="add-box">
-    <p class="add-label">✦ புதிய கவிதை சேர்க்கவும்</p>
-    <div class="add-row">
-      <div class="field-row">
-        <input class="title-field" type="text" id="poem-title" placeholder="கவிதையின் தலைப்பு (விரும்பினால்)..."/>
-        <input class="date-field" type="date" id="poem-date"/>
-      </div>
-      <textarea id="poem-body" placeholder="உங்கள் கவிதையை இங்கே எழுதுங்கள்...&#10;(Ctrl+Enter to add)"></textarea>
-      <button class="btn-add" onclick="addPoem()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-        கவிதை சேர்க்கவும்
-      </button>
-    </div>
+<main id="poem-grid"></main>
+
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeOverlay()">✕</button>
+    <div class="modal-date" id="modal-date"></div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-sig" id="modal-sig"></div>
   </div>
 </div>
 
-<!-- COUNT BAR -->
-<div class="count-bar">
-  <div class="count-line"></div>
-  <span class="count-text" id="poem-count">0 கவிதைகள்</span>
-  <div class="count-line"></div>
+<button class="add-btn" onclick="openAddPanel()" title="கவிதை சேர்க்க">＋</button>
+
+<div class="add-panel-overlay" id="addPanelOverlay" onclick="closeAddPanelOutside(event)">
+  <div class="add-panel">
+    <button class="panel-close" onclick="closeAddPanel()">✕</button>
+    <h2>✦ புதிய கவிதை சேர்க்க</h2>
+
+    <label>தேதி (Date)</label>
+    <input type="text" id="inp-date" placeholder="எ.கா. மார்ச். 24, 2026">
+
+    <label>கவிதை (Poem) *</label>
+    <textarea id="inp-body" placeholder="உங்கள் கவிதையை இங்கே எழுதுங்கள்..."></textarea>
+
+    <label>கையெழுத்து (Signature)</label>
+    <input type="text" id="inp-sig" placeholder="— உங்கள் பெயர்">
+
+    <button class="submit-btn" onclick="submitPoem()">கவிதை சேர் →</button>
+  </div>
 </div>
 
-<!-- GRID -->
-<div class="grid" id="poems-grid"></div>
-
-<!-- FOOTER -->
 <footer>
-  காதலின் வார்த்தைகள் · Words of Love &nbsp;◆&nbsp;
-  <a href="https://www.instagram.com/vigneshvellaidurai/" target="_blank">@vigneshvellaidurai</a>
-  <span class="footer-sig">— விக்கி</span>
+  <p>எழுதியவர் <strong>விக்கி</strong> — அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை</p>
 </footer>
 
-<!-- FAB -->
-<button class="fab" onclick="document.getElementById('add-section').scrollIntoView({behavior:'smooth'})" title="கவிதை சேர்க்கவும்">+</button>
-
-<div class="toast" id="toast"></div>
-
 <script>
-  // Tamil month names
-  const tamilMonths = ['ஜன.','பிப்.','மார்.','ஏப்.','மே','ஜூன்','ஜூலை','ஆக.','செப்.','அக்.','நவ.','டிச.'];
+const DEFAULT_POEMS = [
+  {
+    date: "10 பிப்., 2024",
+    body: `அவளுக்கு அவ்வளவு நீள கூந்தல் இல்லை.
+ஆனால், அந்த அழகுக்கும் குறைவில்லை.
 
-  function formatDate(dateStr) {
-    if (!dateStr) return '';
-    const [y,m,d] = dateStr.split('-');
-    return `${parseInt(d)} ${tamilMonths[parseInt(m)-1]}, ${y}`;
+அந்த கார் வண்ண கூந்தலில் கலையிடுகிறது ஒற்றை ரோஜா.
+
+என்னைப்போலவே அந்த ரோஜாவும் வெட்கப்பட்டுக்கொண்டு தான்
+அவளது கூந்தலின் பின்னால் மறைந்து கொண்டது போல.
+
+அதனை(ரோஜா) போலவே மறைந்து கொண்டு நானும் புன்னகைத்தேன்.
+
+பின்பு மனதிற்குள் ஒரு புலம்பல்,
+ரோஜா ஒரு ரோஜாவை சூடி இருக்கிறாளே என்று.
+
+சிரித்தபடி நான்...`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "செப். 12, 2024",
+    body: `கோடை காலத்திலும் குளம் வற்றவில்லை.
+அந்த பெண் மீன் பிரிந்து போனதால்.
+
+தண்ணீர் வற்றியும்,
+ஆண் மீனின் கண்ணீரில் வாழ்கிறது காதல்.
+
+காதல் மட்டுமா? அவளும் தான்...`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "டிச. 12, 2024",
+    body: `உன்னை கண்டுபிடிக்க முகமெல்லாம் தேவை இல்லை,
+என்னை கலங்கடித்த உன் கண்களே போதும்.`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "ஜன. 21, 2026",
+    body: `எப்படி சொல்வேன் திகட்டுவதற்கு நீ ஒன்றும் உணவு அல்ல,
+என் உலகமென்று.`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "பிப். 13, 2026",
+    body: `பிடிக்கவில்லையா?
+பரவாயில்லை.
+
+எல்லா பூக்களும்
+எல்லா செடிகளிலும்
+பூக்குமா என்னா?
+
+உனக்கு பிடித்த செடியில்
+பூக்க வாழ்ந்துக்கள்.`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "பிப். 17, 2026",
+    body: `அன்று ஒரு இரவு அவள் "Good night" சொல்ல மறந்துவிட்டாள்,
+அன்றிரவு நான் தூங்கவேண்டும் என்பதையே மறந்துவிட்டேன்.`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "பிப். 11, 2026",
+    body: `இத்தனைக்கும்
+பிறதுமா
+காதலிக்கிறாய்?
+என்னால் என்ன சொல்வேன்...
+
+இத்தனைக்கும்
+பிறும்
+காதலிக்கப்படுகிறேனா —
+இது போதாதா?`,
+    sig: "— விக்கி"
+  },
+  {
+    date: "",
+    body: `பல பாம்புகளின் பற்களில் இருந்து பிழைத்துக்கொண்டவன்,
+ஒரு பட்டாம்பூச்சியின் பார்வைக்கு பலியானான்.`,
+    sig: "— விக்கி"
   }
+];
 
-  function todayStr() {
-    const n = new Date();
-    const y = n.getFullYear();
-    const m = String(n.getMonth()+1).padStart(2,'0');
-    const d = String(n.getDate()).padStart(2,'0');
-    return `${y}-${m}-${d}`;
-  }
+function loadPoems() {
+  try {
+    const saved = localStorage.getItem('ennaval_poems');
+    return saved ? JSON.parse(saved) : DEFAULT_POEMS;
+  } catch(e) { return DEFAULT_POEMS; }
+}
 
-  // Set today as default date
-  document.getElementById('poem-date').value = todayStr();
+function savePoems(poems) {
+  try { localStorage.setItem('ennaval_poems', JSON.stringify(poems)); } catch(e) {}
+}
 
-  const defaultPoems = [
-    {id:1000001,title:'',date:'2024-02-10',body:`அவளுக்கு அவ்வளவு நீள கூந்தல் இல்லை.\nஆனால், அந்த அழகுக்கும் குறைவில்லை.\n\nஅந்த கார் வண்ண\nகூந்தலில் கலையிடுகிறது\nஒற்றை ரோஜா.`},
-    {id:1000002,title:'',date:'2024-09-12',body:`கோடை காலத்திலும் குளம் வற்றவில்லை.\nஅந்த பெண் மீன் பிரிந்து போனதால்.\n\nதண்ணீர் வற்றியும்,\nஆண் மீனின் கண்ணீரில்\nவாழ்கிறது காதல்.`},
-    {id:1000003,title:'',date:'2024-12-12',body:`உன்னை கண்டுபிடிக்க\nமுகமெல்லாம் தேவை இல்லை,\nஎன்னை கலங்கடித்த உன்\nகண்களே போதும்.`},
-    {id:1000004,title:'"நான்"',date:'2024-01-01',body:`உனக்காக ஒரு கவிதை எழுத நினைத்து\nகவிதையின் தொடக்கத்தில்\nஉன் பெயரை எழுதினேன்\nஅங்கேயே கவிதை முடிந்து விட்டது!!\n\n~நான்`},
-    {id:1000005,title:'நிலவின் முகம்',date:'2024-03-15',body:`நீங்கள் வானில்\nபார்ப்பதெல்லாம்\nநிலவின் முதுகைத்தான்.\n\nமுகத்தை பார்க்க\nவேண்டுமென்றால்\nசொல்லுங்கள்\nஅவளிடம் கேட்டுப் பார்க்கிறேன்.`},
-    {id:1000006,title:'பெண்ணின் அழகு',date:'2024-04-20',body:`வாழை இலை வழிரும் அழகு\nஇருந்தும் இல்லை இடையும் அழகு\nமுன்னழகை மிஞ்சிவிடும்\nபெண்ணே உன் பின்னழகு\n\nமுக்தி வேண்டும் பக்தன் போல\nதிடமான அகம் அழகு\nஇறை நினைப்பை எனக்கு தரும்\nபெண்ணே உன் பேரழகு.`},
-    {id:1000007,title:'மருத்துவர்',date:'2024-06-08',body:`மருத்துவர்\nமாத்திரையா\nஊசியா எனக் கேட்கிறார்\nநீ என\nஎப்படிச் சொல்வேன்!`},
-    {id:1000008,title:'முத்தங்கள்',date:'2024-07-22',body:`எனக்குச் சில முத்தங்கள்\nகடனாய்க் கொடுங்கள்\nவட்டியும் முதலுமாய்\nதிருப்பித் தருகிறேன்\n\nஒருவேளை என்னால்\nகொடுக்க முடியவில்லையெனில்\nதண்டனையாக\nஎன்னைக் கட்டியணைத்துக் கொள்ளுங்கள்.`},
-    {id:1000009,title:'உலகின் வயது',date:'2024-08-30',body:`உலகின் வயது\nஇரு நூறு கோடி ஆண்டுகளாம்\n\nஅது பொய்\n\nஉன்னை நான் பார்த்து\nஇரண்டு நிமிடங்கள் தானே ஆகின்றன.`}
-  ];
+let poems = loadPoems();
 
-  let poems = JSON.parse(localStorage.getItem('anbe-v4') || 'null');
-  if (!poems) { poems = [...defaultPoems]; save(); }
-
-  function save() { localStorage.setItem('anbe-v4', JSON.stringify(poems)); }
-
-  function showToast(m) {
-    const t = document.getElementById('toast');
-    t.textContent = m; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
-  }
-
-  function addPoem() {
-    const title = document.getElementById('poem-title').value.trim();
-    const body  = document.getElementById('poem-body').value.trim();
-    const date  = document.getElementById('poem-date').value || todayStr();
-    if (!body) { showToast('கவிதை எழுதுங்கள்!'); return; }
-    poems.unshift({ id:Date.now(), title, date, body });
-    save(); render();
-    document.getElementById('poem-title').value = '';
-    document.getElementById('poem-body').value  = '';
-    document.getElementById('poem-date').value  = todayStr();
-    showToast('✦ கவிதை சேர்க்கப்பட்டது!');
-  }
-
-  function removePoem(id) {
-    poems = poems.filter(p => p.id !== id);
-    save(); render();
-    showToast('கவிதை நீக்கப்பட்டது');
-  }
-
-  function esc(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
-  function numLabel(n) {
-    return String(n).padStart(2,'0');
-  }
-
-  function render() {
-    const grid = document.getElementById('poems-grid');
-    const cnt  = document.getElementById('poem-count');
-    cnt.textContent = `${poems.length} கவிதைகள்`;
-
-    if (!poems.length) {
-      grid.innerHTML = `<div class="empty"><span class="empty-sym">◆</span><p>இன்னும் கவிதைகள் சேர்க்கப்படவில்லை...<br/>No poems yet — add your first poem above.</p></div>`;
-      return;
-    }
-
-    grid.innerHTML = poems.map((p, i) => `
-      <div class="poem-card">
-        <div class="card-num">${numLabel(poems.length - i)}</div>
-        <button class="card-close" onclick="removePoem(${p.id})" title="நீக்கவும்">×</button>
-        <div class="card-body">
-          ${p.date ? `<div class="card-date">${formatDate(p.date)}</div>` : ''}
-          ${p.title ? `<div class="card-title">${esc(p.title)}</div>` : ''}
-          <div class="card-poem">${esc(p.body)}</div>
-          <div class="card-footer">
-            <span class="card-sig">— விக்கி</span>
-          </div>
-        </div>
-      </div>`).join('');
-  }
-
-  document.getElementById('poem-body').addEventListener('keydown', function(e) {
-    if (e.ctrlKey && e.key === 'Enter') addPoem();
+function renderPoems() {
+  const grid = document.getElementById('poem-grid');
+  grid.innerHTML = '';
+  poems.forEach((p, i) => {
+    const card = document.createElement('article');
+    card.className = 'poem-card';
+    card.innerHTML = `
+      <div class="poem-number">${String(i + 1).padStart(2, '0')}</div>
+      <button class="delete-btn" title="நீக்கு" onclick="deletePoem(event, ${i})">✕</button>
+      ${p.date ? `<div class="poem-date">${p.date}</div>` : '<div class="poem-date">—</div>'}
+      <div class="poem-body">${p.body}</div>
+      <div class="poem-signature">${p.sig || ''}</div>
+    `;
+    card.addEventListener('click', (e) => {
+      if (e.target.classList.contains('delete-btn')) return;
+      openModal(p);
+    });
+    grid.appendChild(card);
   });
+}
 
-  render();
+function deletePoem(e, index) {
+  e.stopPropagation();
+  if (!confirm('இந்த கவிதையை நீக்கவா?')) return;
+  poems.splice(index, 1);
+  savePoems(poems);
+  renderPoems();
+}
+
+function openModal(p) {
+  document.getElementById('modal-date').textContent = p.date || '';
+  document.getElementById('modal-body').textContent = p.body;
+  document.getElementById('modal-sig').textContent = p.sig || '';
+  document.getElementById('overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOverlay() {
+  document.getElementById('overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('overlay')) closeOverlay();
+}
+
+function openAddPanel() {
+  document.getElementById('addPanelOverlay').classList.add('active');
+  document.getElementById('inp-body').focus();
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAddPanel() {
+  document.getElementById('addPanelOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function closeAddPanelOutside(e) {
+  if (e.target === document.getElementById('addPanelOverlay')) closeAddPanel();
+}
+
+function submitPoem() {
+  const body = document.getElementById('inp-body').value.trim();
+  if (!body) { alert('கவிதை எழுதவும்!'); return; }
+  const date = document.getElementById('inp-date').value.trim();
+  const sig  = document.getElementById('inp-sig').value.trim() || '— அ익்கியவர்';
+  poems.unshift({ date, body, sig });
+  savePoems(poems);
+  renderPoems();
+  document.getElementById('inp-date').value = '';
+  document.getElementById('inp-body').value = '';
+  document.getElementById('inp-sig').value  = '';
+  closeAddPanel();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeOverlay(); closeAddPanel(); }
+});
+
+renderPoems();
 </script>
 </body>
 </html>
