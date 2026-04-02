@@ -20,12 +20,12 @@ jobs:
     - name: Copy files to EC2
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} "rm -rf ~/flaskapp"
-        scp -r . ubuntu@${{ secrets.EC2_HOST }}:~/flaskapp
+        scp -o StrictHostKeyChecking=no -r . ubuntu@${{ secrets.EC2_HOST }}:~/flaskapp
 
-    - name: Deploy with Docker Compose
+    - name: Deploy with Docker Compose (v2)
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} "
           cd ~/flaskapp &&
-          docker-compose down &&
-          docker-compose up -d --build
+          docker compose down || true &&
+          docker compose up -d --build
         "
